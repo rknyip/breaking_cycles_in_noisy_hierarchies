@@ -1,8 +1,8 @@
 import networkx as nx
-from s_c_c import filter_big_scc
-from s_c_c import get_big_sccs
-from file_io import write_pairs_to_file
-from file_io import read_dict_from_file
+from .s_c_c import filter_big_scc
+from .s_c_c import get_big_sccs
+from .file_io import write_pairs_to_file
+from .file_io import read_dict_from_file
 import os.path
 
 def remove_cycle_edges_by_agony_iterately(sccs,edges_score,edges_to_be_removed):
@@ -40,7 +40,7 @@ def remove_cycle_edges_heuristic(graph_file,edges_score,nodetype = int):
 	
 	g = nx.read_edgelist(graph_file,create_using = nx.DiGraph(),nodetype = nodetype)
 
-	from remove_self_loops import remove_self_loops_from_graph
+	from .remove_self_loops import remove_self_loops_from_graph
 	self_loops = remove_self_loops_from_graph(g)
 
 	edges_to_be_removed = scc_based_to_remove_cycle_edges_iterately(g,edges_score)

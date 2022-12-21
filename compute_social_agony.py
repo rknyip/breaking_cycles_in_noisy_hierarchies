@@ -1,10 +1,11 @@
 from datetime import datetime
 import os.path
-from helper_funs import dir_tail_name
+from .helper_funs import dir_tail_name
+from .helper_funs import run_command
+from .file_io import read_dict_from_file
 
 def compute_social_agony_script(graph_file,output,agony_path = "agony/agony "):
 	command = agony_path + graph_file + " " + output
-	from helper_funs import run_command
 	print("running command: %s" % command)
 	start = datetime.now()
 	run_command(command)
@@ -19,7 +20,6 @@ def compute_social_agony(graph_file,agony_path = "agony/agony "):
 	output = os.path.join(dir_name,tail.split(".")[0] + "_socialagony.txt")
 	
 	compute_social_agony_script(graph_file,output,agony_path = agony_path)
-	from file_io import read_dict_from_file
 	agony_score = read_dict_from_file(output)
 	return agony_score
 

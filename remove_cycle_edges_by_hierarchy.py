@@ -1,10 +1,11 @@
 import networkx as nx
-from remove_cycle_edges_by_hierarchy_greedy import scc_based_to_remove_cycle_edges_iterately
-from remove_cycle_edges_by_hierarchy_BF import remove_cycle_edges_BF_iterately
-from remove_cycle_edges_by_hierarchy_voting import remove_cycle_edges_heuristic
-from measures import F1
-from file_io import read_dict_from_file
-from file_io import write_pairs_to_file
+from .remove_cycle_edges_by_hierarchy_greedy import scc_based_to_remove_cycle_edges_iterately
+from .remove_cycle_edges_by_hierarchy_BF import remove_cycle_edges_BF_iterately
+from .remove_cycle_edges_by_hierarchy_voting import remove_cycle_edges_heuristic
+from .measures import F1
+from .file_io import read_dict_from_file
+from .file_io import write_pairs_to_file
+from .compute_social_agony import compute_social_agony
 	
 def get_edges_voting_scores(set_edges_list):
 	total_edges = set()
@@ -43,7 +44,7 @@ def remove_cycle_edges_by_hierarchy(graph_file,nodes_score_dict,score_name = "so
 def computing_hierarchy(graph_file,players_score_func_name, nodetype = int):
 	import os.path
 	if players_score_func_name == "socialagony":
-		from helper_funs import dir_tail_name
+		from .helper_funs import dir_tail_name
 		dir_name,tail = dir_tail_name(graph_file)
 		agony_file = os.path.join(dir_name,tail.split(".")[0] + "_socialagony.txt")
 		#agony_file = graph_file[:len(graph_file)-6] + "_socialagony.txt"
@@ -55,8 +56,7 @@ def computing_hierarchy(graph_file,players_score_func_name, nodetype = int):
 			players = read_dict_from_file(agony_file)
 		else:
 			print("start computing socialagony...")
-			from compute_social_agony import compute_social_agony
-			players = compute_social_agony(graph_file,agony_path = "agony/agony ")
+			players = compute_social_agony(graph_file,agony_path = "breaking_cycles_in_noisy_hierarchies/agony/agony ")
 			print("write socialagony to file: %s" % agony_file)
 		return players
 	g = nx.read_edgelist(graph_file,create_using = nx.DiGraph(),nodetype = nodetype)
@@ -92,7 +92,7 @@ def computing_hierarchy(graph_file,players_score_func_name, nodetype = int):
 
 def breaking_cycles_by_hierarchy_performance(graph_file,gt_file,players_score_name,nodetype = int):
 	
-	from measures import report_performance
+	from .measures import report_performance
 	if players_score_name != "ensembling":
 		players_score_dict  = computing_hierarchy(graph_file,players_score_name,nodetype = nodetype)
 		e1,e2,e3,e4 = remove_cycle_edges_by_hierarchy(graph_file,players_score_dict,players_score_name,nodetype = nodetype)

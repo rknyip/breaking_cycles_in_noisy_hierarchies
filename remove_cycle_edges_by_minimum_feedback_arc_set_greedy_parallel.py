@@ -1,7 +1,7 @@
-from s_c_c import filter_big_scc
-from s_c_c import scc_nodes_edges
-from s_c_c import get_big_sccs
-from file_io import write_pairs_to_file
+from .s_c_c import filter_big_scc
+from .s_c_c import scc_nodes_edges
+from .s_c_c import get_big_sccs
+from .file_io import write_pairs_to_file
 import networkx as nx
 
 

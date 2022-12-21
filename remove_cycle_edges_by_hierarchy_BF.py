@@ -1,8 +1,8 @@
 import networkx as nx
-from s_c_c import filter_big_scc
-from s_c_c import get_big_sccs
-from file_io import write_pairs_to_file
-from file_io import read_dict_from_file
+from .s_c_c import filter_big_scc
+from .s_c_c import get_big_sccs
+from .file_io import write_pairs_to_file
+from .file_io import read_dict_from_file
 #from network_functions import analysis_graph
 
 def remove_cycle_edges_by_ranking_score_iterately(sccs,players,edges_to_be_removed,is_Forward):
@@ -11,7 +11,7 @@ def remove_cycle_edges_by_ranking_score_iterately(sccs,players,edges_to_be_remov
 		node_scores_dict = {}
 		for node in graph.nodes():
 			node_scores_dict[node] = players[node]
-		from helper_funs import pick_from_dict
+		from .helper_funs import pick_from_dict
 		max_k,max_v,min_k,min_v = pick_from_dict(node_scores_dict,"both")
 
 		#node_scores = [(node,players[node]) for node in graph.nodes_iter()]
@@ -27,9 +27,9 @@ def remove_cycle_edges_by_ranking_score_iterately(sccs,players,edges_to_be_remov
 			target_edges = [(v,node) for v in graph.predecessors(node)]
 		
 		'''
-		from remove_cycle_edges_by_agony import get_agonies
+		from .remove_cycle_edges_by_agony import get_agonies
 		pair_agony_dict = get_agonies(target_edges,players)
-		from helper_funs import pick_from_dict
+		from .helper_funs import pick_from_dict
 		pair_max_agony,agony = pick_from_dict(pair_agony_dict)
 		print("edge with max agony: %s, max agony: %0.4f" % (pair_max_agony,agony))
 		target_edges = [pair_max_agony]
@@ -45,7 +45,7 @@ def remove_cycle_edges_by_ranking_score_iterately(sccs,players,edges_to_be_remov
 			return 
 
 def scores_of_nodes_in_scc(sccs,players):
-	from s_c_c import nodes_in_scc
+	from .s_c_c import nodes_in_scc
 	scc_nodes = nodes_in_scc(sccs)
 	scc_nodes_score_dict = {}
 	for node in scc_nodes:
@@ -66,7 +66,7 @@ def scc_based_to_remove_cycle_edges_iterately(g,nodes_score,is_Forward):
 	return edges_to_be_removed
 
 def remove_cycle_edges_BF_iterately(g,players,is_Forward = True,score_name = "socialagony"):
-	from remove_self_loops import remove_self_loops_from_graph
+	from .remove_self_loops import remove_self_loops_from_graph
 	self_loops = remove_self_loops_from_graph(g)
 	edges_to_be_removed = scc_based_to_remove_cycle_edges_iterately(g,players,is_Forward)
 	edges_to_be_removed = list(set(edges_to_be_removed))
